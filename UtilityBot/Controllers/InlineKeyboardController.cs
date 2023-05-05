@@ -8,13 +8,9 @@ namespace UtilityBot.Controllers
 {
     public class InlineKeyboardController : BaseController, IInlineKeyboardController
     {
-        private readonly IStorage _memoryStorage;
         protected override string _returnMessage { get; set; } = "Button press detected";
-        public InlineKeyboardController(AppSettings appSettings, ITelegramBotClient telegramBotClient, ISimpleLogger logger, IStorage memoryStorage) 
-            : base(appSettings, logger, telegramBotClient)
-        {
-            _memoryStorage = memoryStorage;
-        }
+        public InlineKeyboardController(AppSettings appSettings, ITelegramBotClient telegramBotClient, ISimpleLogger logger, 
+            IStorage memoryStorage) : base(appSettings, logger, telegramBotClient, memoryStorage) { }
 
         public async Task HandleAsync(CallbackQuery? callbackQuery, CancellationToken ct)
         {
@@ -27,9 +23,9 @@ namespace UtilityBot.Controllers
             // Генерим информационное сообщение
             string reply = callbackQuery.Data switch
             {
-                "lettersCount" => "Letters in message count mode is ON",
-                "sumNumbers" => "Numbers in message sum count is ON (separate numbers with a space)",
-                _ => String.Empty
+                "simbolsCount" => "Simbols in message count mode is ON",
+                "sumNumbers"   => "Numbers in message sum count is ON (separate numbers with a space)",
+                _              => String.Empty
             };
 
             // Отправляем в ответ уведомление о выборе

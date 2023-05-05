@@ -9,7 +9,8 @@ namespace UtilityBot.Controllers
 {
     public class TextMessageController : BaseController , ITextMessageController
     {
-        public TextMessageController(AppSettings appSettings,ISimpleLogger logger, ITelegramBotClient telegramBotClient) : base(appSettings, logger, telegramBotClient) { }
+        public TextMessageController(AppSettings appSettings, ITelegramBotClient telegramBotClient, ISimpleLogger logger,
+            IStorage memoryStorage) : base(appSettings, logger, telegramBotClient, memoryStorage) { }
 
         public override async Task HandleAsync(Message message, CancellationToken ct)
         {
@@ -22,7 +23,7 @@ namespace UtilityBot.Controllers
                     var buttons = new List<InlineKeyboardButton[]>();
                     buttons.Add(new[]
                     {
-                        InlineKeyboardButton.WithCallbackData($" Count letters in message" , $"lettersCount"),
+                        InlineKeyboardButton.WithCallbackData($" Count simbols in message" , $"simbolsCount"),
                     });
                     buttons.Add(new[]
                     {
@@ -36,9 +37,20 @@ namespace UtilityBot.Controllers
 
                     break;
                 default:
-                    await _telegramClient.SendTextMessageAsync(message.Chat.Id, _returnMessage, cancellationToken: ct);
+                    await _telegramClient.SendTextMessageAsync(message.Chat.Id, ModeBasedReply(message), cancellationToken: ct);
                     break;
             }
+        }
+
+        private string ModeBasedReply(Message message)
+        {
+            string reply = _memoryStorage.GetSession(message.Chat.Id).BotMode switch
+            {
+                "simbolsCount" => $"Your message has {message.Text.Length} simbols in it.",
+                "sumNumbers"   => "some num else method",
+                _              => String.Empty
+            }; 
+            return reply;
         }
     }
 }

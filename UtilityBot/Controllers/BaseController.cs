@@ -13,13 +13,16 @@ namespace UtilityBot.Controllers
         protected readonly ITelegramBotClient _telegramClient;
 
         protected readonly ISimpleLogger _logger;
+
+        protected readonly IStorage _memoryStorage;
         protected virtual string _returnMessage { get; set; } = "Text message received";
 
-        public BaseController(AppSettings appSettings, ISimpleLogger logger, ITelegramBotClient telegramBotClient)
+        public BaseController(AppSettings appSettings, ISimpleLogger logger, ITelegramBotClient telegramBotClient, IStorage memoryStorage)
         {
             _appSettings = appSettings;
             _telegramClient = telegramBotClient;
             _logger = logger;
+            _memoryStorage = memoryStorage;
         }
 
         public virtual async Task HandleAsync(Message message, CancellationToken ct)
