@@ -75,7 +75,7 @@ namespace UtilityBot
             {
                 ApiRequestException apiRequestException
                     => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
-                _ => exception.ToString()
+                _   => exception.ToString()
             };
 
             _logger.Log(errorMessage);

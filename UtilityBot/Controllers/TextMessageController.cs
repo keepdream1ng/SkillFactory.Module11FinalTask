@@ -4,6 +4,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using UtilityBot.Configuration;
 using UtilityBot.Services;
+using UtilityBot.Utilities;
 
 namespace UtilityBot.Controllers
 {
@@ -47,8 +48,9 @@ namespace UtilityBot.Controllers
             string reply = _memoryStorage.GetSession(message.Chat.Id).BotMode switch
             {
                 "simbolsCount" => $"Your message has {message.Text.Length} simbols in it.",
-                "sumNumbers"   => "some num else method",
-                _              => String.Empty
+                "sumNumbers"   => $"{(MultibleIntParser.TryParse(message.Text, out int[] numbers) ? "Succesful count:" : "Errors occured but:")}" +
+                                  $" sum of numbers is {numbers.Sum()}",
+                _              => "Something went wrong, please pick a mode in main menu." 
             }; 
             return reply;
         }
