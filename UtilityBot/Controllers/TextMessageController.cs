@@ -52,6 +52,7 @@ namespace UtilityBot.Controllers
                                   $" sum of numbers is {numbers.Sum()}",
                 _              => "Something went wrong, please pick a mode in main menu." 
             }; 
+            _logger.Log($"Generated answer: \"{reply}\"");
             return reply;
         }
     }

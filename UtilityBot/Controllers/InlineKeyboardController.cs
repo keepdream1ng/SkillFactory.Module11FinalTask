@@ -27,6 +27,7 @@ namespace UtilityBot.Controllers
                 "sumNumbers"   => "Numbers in message sum count is ON (separate numbers with a space)",
                 _              => String.Empty
             };
+            _logger.Log(reply);
 
             // Отправляем в ответ уведомление о выборе
             await _telegramClient.SendTextMessageAsync(callbackQuery.From.Id,

@@ -27,7 +27,7 @@ namespace UtilityBot.Controllers
 
         public virtual async Task HandleAsync(Message message, CancellationToken ct)
         {
-            Console.WriteLine($"Controller {GetType().Name} get a message.");
+            _logger.Log($"Controller {GetType().Name} get a message.");
             await _telegramClient.SendTextMessageAsync(message.Chat.Id, _returnMessage, cancellationToken: ct);
         }
     }
